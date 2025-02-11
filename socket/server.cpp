@@ -58,7 +58,7 @@ int main()
         if(bytes_read > 0)
         {
             //success, and sent message to client
-            const char* message = "hello from server";
+            const char* message = "returned hello from server";
             //step 6: send message
             send(new_socket, message, strlen(message), 0);
 

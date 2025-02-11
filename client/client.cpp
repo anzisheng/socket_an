@@ -26,6 +26,10 @@ int main(){
         std::cerr << "connection failed" << std::endl;
         return 1;
     }
+    else
+    {
+        std::cout << "connected to ip : 127.0.0.1, port: 8080"<<endl;
+    }
     
     const char* message = "hello from server";
     send(sock, message, strlen(message), 0);
