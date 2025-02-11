@@ -57,7 +57,7 @@ int main()
         ssize_t bytes_read = recv(new_socket, buffer, sizeof(buffer), 0);
         if(bytes_read > 0)
         {
-            std::cout << "received content is " << buffer << std::endl;
+            std::cout << "received content is: \n" << buffer << std::endl;
             //success, and sent message to client
             const char* message = "returned hello from server";
             //step 6: send message

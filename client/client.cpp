@@ -4,7 +4,81 @@
 #include <unistd.h>
 #include <cstring>
 
+#include <nlohmann/json.hpp>
+#include <iostream>
+#include <iomanip>
+
+using json = nlohmann::json;
+
+struct VersionData
+{
+    int64_t id;
+    int32_t version;
+    std::string url;
+    std::string name;
+    // 输出运算符重载
+    friend std::ostream &operator<<( std::ostream &output, const VersionData &obj)
+    {
+        output << "id:" << obj.id << "Version:" << obj.version ;
+        return output;
+    }
+};
+// int main()
+// {
+//     std::cout << std::setw(4) << json::meta() << std::endl;
+// }
 int main(){
+    std::cout << std::setw(4) << json::meta() << std::endl;
+
+std::string response_body = "[\n"
+                                "    {\n"
+                                "        \"name\": \"project1\",\n"
+                                "        \"extra_data\": {\n"
+                                "            \"desc\": \"comment1\"\n"
+                                "        },\n"
+                                "        \"url\": \"https://a.b.c.0.zip\",\n"
+
+                                "        \"id\": 100000,\n"
+                                "        \"version\": 4\n"
+                                "    }\n,"
+                                "    {\n"
+                                "        \"name\": \"projectB\",\n"
+                                "        \"extra_data\": {\n"
+                                "            \"desc\": \"comment2\",\n"
+                                "            \"author\": \"zhangsan\"\n"
+                                "        },\n"
+                                "        \"url\": \"https://a.b.c/1.zip\",\n"
+                                "        \"id\": 200000,\n"
+                                "        \"version\": 5\n"
+                                "    }"
+                                "]";
+
+nlohmann::json response_json = nlohmann::json::parse(response_body, nullptr, false);
+    std::vector<VersionData> versionDataList;
+    if(response_json.is_array()) {
+        std::cout << "array!" << std::endl;
+        for (auto p : response_json) {
+            VersionData versionData;
+            versionData.version = p["version"];
+            versionData.id = p["id"];
+            versionData.name = p["name"];
+            versionData.url = p["url"];
+            versionDataList.push_back(versionData);
+
+            std::cout << "id:" << versionData.id << std::endl;
+        }
+        std::cout << "versionDataList:" << std::endl;
+        for (std::vector<VersionData>::iterator iter = versionDataList.begin(); iter != versionDataList.end(); iter++) {
+            std::cout << (*iter).id << std::endl;
+            std::cout << (*iter) << std::endl;
+        }
+    } else {
+        std::cout << "not array" << std::endl;
+    }
+
+    std::cout << "done of end!" << std::endl;
+
+
     int sock;
     struct sockaddr_in server;
 
@@ -31,7 +105,7 @@ int main(){
         std::cout << "connected to ip : 127.0.0.1, port: 8080"<< std::endl;
     }
     
-    const char* message = "send hello from client";
+    const char* message = response_body.c_str();// "send hello from client";
     send(sock, message, strlen(message), 0);
 
     //接收响应
