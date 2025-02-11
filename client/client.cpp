@@ -28,10 +28,10 @@ int main(){
     }
     else
     {
-        std::cout << "connected to ip : 127.0.0.1, port: 8080"<<endl;
+        std::cout << "connected to ip : 127.0.0.1, port: 8080"<< std::endl;
     }
     
-    const char* message = "hello from server";
+    const char* message = "send hello from client";
     send(sock, message, strlen(message), 0);
 
     //接收响应

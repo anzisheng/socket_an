@@ -40,7 +40,7 @@ int main()
         std::cerr << "listen failed" << std::endl;
     }
 
-    std::cout << "server on port:" << PORT << "listen ..."<<std::endl;
+    std::cout << "server on port:" << PORT << " , listen ..."<<std::endl;
 
     //死循环，接收客户端连接
     while(true)
@@ -57,6 +57,7 @@ int main()
         ssize_t bytes_read = recv(new_socket, buffer, sizeof(buffer), 0);
         if(bytes_read > 0)
         {
+            std::cout << "received content is " << buffer << std::endl;
             //success, and sent message to client
             const char* message = "returned hello from server";
             //step 6: send message
